@@ -1,6 +1,6 @@
 # 极课项目后端服务
 
-转[极课项目APP](https://github.com/by-syk/SchTtable)
+转「[极课项目APP](https://github.com/by-syk/SchTtable)」
 
 ### 环境
 

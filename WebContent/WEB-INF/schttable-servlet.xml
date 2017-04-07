@@ -46,8 +46,8 @@
     destroy-method="close">
     <property name="driverClass" value="com.mysql.jdbc.Driver" />
     <property name="jdbcUrl" value="jdbc:mysql://localhost/schttable?useUnicode=true&amp;characterEncoding=UTF-8" />
-    <property name="user" value="root" />
-    <property name="password" value="" />
+    <property name="user" value="schttable" />
+    <property name="password" value="schttable" />
     <!-- 连接池配置 -->
     <property name="initialPoolSize" value="5" />
     <property name="maxPoolSize" value="50" />
