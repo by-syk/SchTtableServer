@@ -1,6 +1,6 @@
 # 极课项目后端服务
 
-[极课APP](https://github.com/by-syk/SchTtable)
+转[极课项目APP](https://github.com/by-syk/SchTtable)
 
 ### 环境
 
@@ -28,4 +28,4 @@
     limitations under the License.
 
 
-*Copyright &#169; 2017 By_syk. All rights reserved.*
+*Copyright &#169; 2016-2017 By_syk. All rights reserved.*
