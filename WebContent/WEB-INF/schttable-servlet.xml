@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+  
+  <!-- 默认的注解映射的支持 -->
+  <!-- 用于启用 @ResponseBody @RequestBody 注解 -->
+  <mvc:annotation-driven>
+    <!-- 解决 @ResponseBody 中文乱码 -->
+    <mvc:message-converters>
+      <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+        <constructor-arg value="UTF-8" />
+      </bean>
+    </mvc:message-converters>
+  </mvc:annotation-driven>
+  
+  <!-- 自动扫描 Component：@Controller @Service @Repository @Component -->
+  <context:component-scan base-package="com.by_syk.schttableserver.controller" />
+  <context:component-scan base-package="com.by_syk.schttableserver.service" />
+  <context:component-scan base-package="com.by_syk.schttableserver.dao" />
+  <context:component-scan base-package="com.by_syk.schttableserver.config" />
+  
+  <!-- ViewResolver -->
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+    <property name="prefix" value="/WEB-INF/pages/" />
+    <property name="suffix" value=".jsp" />
+  </bean>
+  
+  <!-- MySQL -->
+  <bean name="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    destroy-method="close">
+    <property name="driverClass" value="com.mysql.jdbc.Driver" />
+    <property name="jdbcUrl" value="jdbc:mysql://localhost/schttable?useUnicode=true&amp;characterEncoding=UTF-8" />
+    <property name="user" value="root" />
+    <property name="password" value="" />
+    <!-- 连接池配置 -->
+    <property name="initialPoolSize" value="5" />
+    <property name="maxPoolSize" value="50" />
+  </bean>
+  
+  <!-- Hibernate 4 SessionFactory Bean definition -->
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <property name="dataSource" ref="c3p0DataSource" />
+    <!-- <property name="configLocation" value="hibernate.cfg.xml" /> -->
+    <property name="annotatedClasses">
+      <list>
+        <value>com.by_syk.schttableserver.bean.CourseBean</value>
+        <value>com.by_syk.schttableserver.bean.SchoolBean</value>
+        <value>com.by_syk.schttableserver.bean.TimetableBean</value>
+        <value>com.by_syk.schttableserver.bean.KeyBean</value>
+        <value>com.by_syk.schttableserver.bean.StatusBean</value>
+        <value>com.by_syk.schttableserver.bean.MonitorBean</value>
+        <value>com.by_syk.schttableserver.bean.SchoolTodoBean</value>
+        <value>com.by_syk.schttableserver.bean.AppVerBean</value>
+      </list>
+    </property>
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+        <!-- <prop key="hibernate.current_session_context_class">thread</prop> -->
+        <prop key="hibernate.c3p0.timeout">100</prop>
+        <!-- 在控制台输出SQL语句 -->
+        <prop key="hibernate.show_sql">false</prop>
+        <!-- 格式化SQL语句 -->
+        <prop key="hibernate.format_sql">false</prop>
+      </props>
+    </property>
+  </bean>
+
+  <!-- 配置事务管理器 -->  
+  <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+  <tx:annotation-driven transaction-manager="transactionManager" />
+
+  <!-- 配置线程池 -->
+  <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    <!-- 线程池维护线程的最少数量 -->
+    <property name="corePoolSize" value="5" />
+    <!-- 线程池维护线程所允许的空闲时间 -->
+    <property name="keepAliveSeconds" value="30000" />
+    <!-- 线程池维护线程的最大数量 -->
+    <property name="maxPoolSize" value="100" />
+    <!-- 线程池所使用的缓冲队列 -->
+    <property name="queueCapacity" value="200" />
+  </bean>
+
+  <!-- 用于将对象转换为 JSON，需引入Jackson包 -->
+  <!-- Spring MVC4 以上，使用的json包有变更。 -->
+  <!-- 新用到包为 jackson-annotations-2.5.0.jar，jackson-core-2.5.0.jar，jackson-databind-2.5.0.jar -->
+  <!-- 经测试，添加了 <mvc:annotation-driven /> 只需将包引入即可，不需要配置 -->
+  <!-- 另外，XML是默认支持的，不需要额外引包 -->
+  <!-- <bean id="stringConverter"
+    class="org.springframework.http.converter.StringHttpMessageConverter">
+    <property name="supportedMediaTypes">
+      <list>
+        <value>text/plain;charset=UTF-8</value>
+      </list>
+    </property>
+  </bean>
+  <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+  <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <property name="messageConverters">
+      <list>
+        <ref bean="stringConverter" />
+        <ref bean="jsonConverter" />
+      </list>
+    </property>
+  </bean> -->
+  
+  <!-- 配置文件 -->
+  <!-- <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="classpath:resources/urls.properties" />
+    <property name="location" value="/WEB-INF/config/urls.properties" />
+    <property name="fileEncoding" value="utf-8" />
+  </bean> -->
+  <context:property-placeholder location="classpath:resources/schttable.properties" />
+  <!-- <context:property-placeholder location="/WEB-INF/config/schttable.properties" /> -->
+
+  <!-- 全局异常处理 -->
+  <bean id="exceptionHandler" class="com.by_syk.schttableserver.handler.GlobalExceptionHandler" />
+
+</beans>
