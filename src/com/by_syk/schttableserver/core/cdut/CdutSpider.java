@@ -37,26 +37,26 @@ public class CdutSpider extends BaseSpider {
     }
 
     @Override
-    public boolean init(String stuNo, String password, String userKey, StatusBean statusBean) {
+    public boolean init(String stuNo, String pwd, String userKey, StatusBean statusBean) {
         System.out.println("CdutSpider - init");
         
         super.stuNo = stuNo;
-        super.pwd = password;
+        super.pwd = pwd;
         super.userKey = userKey;
         super.tokenCookie = null;
-        if (StringUtil.isEmpty(stuNo) || StringUtil.isEmpty(password) || StringUtil.isEmpty(userKey)) {
+        if (StringUtil.isEmpty(stuNo) || StringUtil.isEmpty(pwd) || StringUtil.isEmpty(userKey)) {
             statusBean.setCode(StatusBean.CODE_ERR_LOGIN);
             return false;
         }
         
         try {
             long sign = (new Date()).getTime();
-            String pwd = CdutMd5.hex_md5(stuNo + sign + CdutMd5.hex_md5(password.trim()));
+            String enPwd = CdutMd5.hex_md5(stuNo + sign + CdutMd5.hex_md5(pwd.trim()));
             
             Map<String, String> map = new HashMap<>();
             map.put("Action", "Login");
             map.put("userName", stuNo);
-            map.put("pwd", pwd);
+            map.put("pwd", enPwd);
             map.put("sign", String.valueOf(sign));
             
             // httpURLConnection.getHeaderField("Set-Cookie")
@@ -201,10 +201,10 @@ public class CdutSpider extends BaseSpider {
             while (matcher1.find()) {
                 int n = (matcher1.group(1) == null ? 1 : Integer.parseInt(matcher1.group(1)));
                 grids += n;
-                if (grids % 12 == 5) {
+                if (grids % 12 == 5) { // 第5格为“午”，非课时
                     continue;
                 }
-                n = n == 12 ? 11 : n;
+                n = n > 5 ? n - 1 : n;
                 
                 CourseBean courseBean = new CourseBean();
                 courseBean.setUserKey(userKey);
@@ -213,6 +213,9 @@ public class CdutSpider extends BaseSpider {
                 courseBean.setTerm(term);
                 String nameAbbr = matcher1.group(2);
                 if (!"&nbsp;".equals(nameAbbr)) {
+                    if ("Z".equals(nameAbbr)) {
+                        System.out.print("");
+                    }
                     courseBean.setNameAbbr(nameAbbr);
                     String nameCode = matcher1.group(3);
                     if (detailText != null && nameCode != null) {

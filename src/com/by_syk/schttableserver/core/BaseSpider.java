@@ -7,6 +7,9 @@ import com.by_syk.schttableserver.bean.KeyBean;
 import com.by_syk.schttableserver.bean.StatusBean;
 import com.by_syk.schttableserver.config.Config;
 import com.by_syk.schttableserver.core.cdut.CdutSpider;
+import com.by_syk.schttableserver.core.cmc.CmcSpider;
+import com.by_syk.schttableserver.core.neuq.NeuqSpider;
+import com.by_syk.schttableserver.core.nju.NjuSpider;
 import com.by_syk.schttableserver.util.StringUtil;
 
 /**
@@ -62,12 +65,12 @@ public abstract class BaseSpider {
      * {@link #checkTerm()}
      * 
      * @param stuNo 学号
-     * @param password 密码
+     * @param pwd 密码
      * @param userKey
      * @param statusBean 不能为 null
      * @return
      */
-    public abstract boolean init(String stuNo, String password, String userKey, StatusBean statusBean);
+    public abstract boolean init(String stuNo, String pwd, String userKey, StatusBean statusBean);
     
     /**
      * 抓取课表页面
@@ -112,11 +115,13 @@ public abstract class BaseSpider {
         
         if (config.getCdutSchoolCode().equals(schoolCode)) {
             return new CdutSpider(config);
-        }/* else if (config.getNeuqSchoolCode().equals(schoolCode)) {
+        } else if (config.getNeuqSchoolCode().equals(schoolCode)) {
             return new NeuqSpider(config);
         } else if (config.getCmcSchoolCode().equals(schoolCode)) {
             return new CmcSpider(config);
-        }*/
+        } else if (config.getNjuSchoolCode().equals(schoolCode)) {
+            return new NjuSpider(config);
+        }
         
         statusBean.setCode(StatusBean.CODE_ERR_SCHOOL);
         return null;

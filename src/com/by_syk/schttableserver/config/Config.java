@@ -43,8 +43,8 @@ public class Config {
     @Value("${neuq.login}")
     private String neuqLogin;
     
-    @Value("${neuq.graphicc}")
-    private String neuqGraphicC;
+    @Value("${neuq.login1}")
+    private String neuqLogin1;
     
     @Value("${neuq.courses}")
     private String neuqCourses;
@@ -151,6 +151,9 @@ public class Config {
     @Value("${suse.weekorder1startdate}")
     private String suseWeekOrder1StartDate;
 
+    @Value("${nju.schoolcode}")
+    private String njuSchoolCode;
+    
     @Value("${nju.host}")
     private String njuHost;
     
@@ -433,8 +436,8 @@ public class Config {
         return neuqLogin;
     }
 
-    public String getNeuqGraphicC() {
-        return neuqGraphicC;
+    public String getNeuqLogin1() {
+        return neuqLogin1;
     }
 
     public String getNeuqCourses() {
@@ -579,6 +582,10 @@ public class Config {
 
     public String getCdutGrade() {
         return cdutGrade;
+    }
+    
+    public String getNjuSchoolCode() {
+        return njuSchoolCode;
     }
 
     public String getNjuHost() {

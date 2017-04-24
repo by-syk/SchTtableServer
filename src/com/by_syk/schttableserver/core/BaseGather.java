@@ -5,6 +5,9 @@ import java.io.File;
 import com.by_syk.schttableserver.bean.StatusBean;
 import com.by_syk.schttableserver.config.Config;
 import com.by_syk.schttableserver.core.cdut.CdutGather;
+import com.by_syk.schttableserver.core.cmc.CmcGather;
+import com.by_syk.schttableserver.core.neuq.NeuqGather;
+import com.by_syk.schttableserver.core.nju.NjuGather;
 import com.by_syk.schttableserver.util.ExtraUtil;
 import com.by_syk.schttableserver.util.StringUtil;
 
@@ -15,7 +18,7 @@ public abstract class BaseGather {
     /**
      * 缓存课表页面的目录
      */
-    private String htmlDir = null;
+    protected String htmlDir = null;
     
     protected static final String COURSE_PAGE_FILE_NAME = "index.html";
     
@@ -149,11 +152,13 @@ public abstract class BaseGather {
         
         if (config.getCdutSchoolCode().equals(schoolCode)) {
             return new CdutGather(config);
-        }/* else if (config.getNeuqSchoolCode().equals(schoolCode)) {
+        } else if (config.getNeuqSchoolCode().equals(schoolCode)) {
             return new NeuqGather(config);
         } else if (config.getCmcSchoolCode().equals(schoolCode)) {
             return new CmcGather(config);
-        }*/
+        } else if (config.getNjuSchoolCode().equals(schoolCode)) {
+            return new NjuGather(config);
+        }
         
         statusBean.setCode(StatusBean.CODE_ERR_SCHOOL);
         return null;

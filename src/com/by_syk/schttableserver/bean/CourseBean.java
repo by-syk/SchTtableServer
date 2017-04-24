@@ -74,7 +74,6 @@ public class CourseBean implements Serializable {
     private int courseOrder;
     
     // 节数（1~
-    @Id
     @Column(name = "course_num")
     private int courseNum;
     
@@ -97,6 +96,7 @@ public class CourseBean implements Serializable {
     private boolean sleep;
     
     // 重课标记，默认为0，非零表示有冲突的课
+    @Id
     @Column(name = "conflict")
     private int conflict;
     

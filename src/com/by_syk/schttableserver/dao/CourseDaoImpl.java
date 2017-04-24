@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.by_syk.schttableserver.bean.CourseBean;
 import com.by_syk.schttableserver.util.DateUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository("courseDao")
 @Transactional
@@ -39,7 +40,7 @@ public class CourseDaoImpl implements ICourseDao {
         Session session = sessionFactory.getCurrentSession();
         // 异常抛出在方法上，不允许任何一条数据插入出错
         for (CourseBean bean : beanList) {
-//            System.out.println(JSONObject.fromObject(bean));
+//            System.out.println((new ObjectMapper()).writeValueAsString(bean));
             session.save(bean);
         }
         return true;

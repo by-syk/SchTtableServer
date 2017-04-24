@@ -23,6 +23,8 @@ import com.by_syk.schttableserver.dao.ITimetableDao;
 import com.by_syk.schttableserver.util.DateUtil;
 import com.by_syk.schttableserver.vo.CourseVo;
 import com.by_syk.schttableserver.vo.TermVo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service("commonService")
 public class CommonServiceImpl implements ICommonService {
@@ -91,11 +93,16 @@ public class CommonServiceImpl implements ICommonService {
 //            for (CourseBean courseBean : list) {
 //                courseDao.add(courseBean);
 //            }
+            for (CourseBean bean : list) {
+                if ("Zigbee组网实习".equals(bean.getName())) {
+                    System.out.println((new ObjectMapper()).writeValueAsString(bean));
+                }
+            }
             courseDao.add(list);
             return true;
         } catch (Exception e) {
-            statusBean.setCode(StatusBean.CODE_ERR_DAO);
             e.printStackTrace();
+            statusBean.setCode(StatusBean.CODE_ERR_DAO);
         }
         courseDao.delete(keyBean.getUserKey()); // 数据入库失败，清空已入库数据
         

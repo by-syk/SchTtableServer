@@ -664,17 +664,12 @@ public class HttpUtil {
      * 
      * @param url
      * @param paraMap
-     * @param cookie
+     * @param headerMap
      * @param tokenCookie
      * @return
      * @throws IOException
      */
-    public static String postReturnCookie(String url, Map<String, String> paraMap, String cookie, TokenCookie tokenCookie) throws IOException {
-        Map<String, String> headerMap = null;
-        if (cookie != null) {
-            headerMap = new HashMap<>();
-            headerMap.put("Cookie", cookie);
-        }
+    public static String postReturnCookie(String url, Map<String, String> paraMap, Map<String, String> headerMap, TokenCookie tokenCookie) throws IOException {
         Request request = createPostRequest(url, paraMap, headerMap);
         
         Response response = okHttpClient.newCall(request).execute();
@@ -701,12 +696,32 @@ public class HttpUtil {
      * 
      * @param url
      * @param paraMap
+     * @param cookie
+     * @param tokenCookie
+     * @return
+     * @throws IOException
+     */
+    public static String postReturnCookie(String url, Map<String, String> paraMap, String cookie, TokenCookie tokenCookie) throws IOException {
+        Map<String, String> headerMap = null;
+        if (cookie != null) {
+            headerMap = new HashMap<>();
+            headerMap.put("Cookie", cookie);
+        }
+        
+        return postReturnCookie(url, paraMap, headerMap, tokenCookie);
+    }
+    
+    /**
+     * 获取 Cookie
+     * 
+     * @param url
+     * @param paraMap
      * @param tokenCookie
      * @return
      * @throws IOException
      */
     public static String postReturnCookie(String url, Map<String, String> paraMap, TokenCookie tokenCookie) throws IOException {
-        return postReturnCookie(url, paraMap, null, tokenCookie);
+        return postReturnCookie(url, paraMap, (Map<String, String>) null, tokenCookie);
     }
     
     /**
