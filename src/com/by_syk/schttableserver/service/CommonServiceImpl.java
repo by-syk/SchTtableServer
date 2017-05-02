@@ -93,11 +93,6 @@ public class CommonServiceImpl implements ICommonService {
 //            for (CourseBean courseBean : list) {
 //                courseDao.add(courseBean);
 //            }
-            for (CourseBean bean : list) {
-                if ("Zigbee组网实习".equals(bean.getName())) {
-                    System.out.println((new ObjectMapper()).writeValueAsString(bean));
-                }
-            }
             courseDao.add(list);
             return true;
         } catch (Exception e) {

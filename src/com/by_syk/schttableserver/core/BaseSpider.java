@@ -8,6 +8,7 @@ import com.by_syk.schttableserver.bean.StatusBean;
 import com.by_syk.schttableserver.config.Config;
 import com.by_syk.schttableserver.core.cdut.CdutSpider;
 import com.by_syk.schttableserver.core.cmc.CmcSpider;
+import com.by_syk.schttableserver.core.gdou.GdouSpider;
 import com.by_syk.schttableserver.core.neuq.NeuqSpider;
 import com.by_syk.schttableserver.core.nju.NjuSpider;
 import com.by_syk.schttableserver.util.StringUtil;
@@ -121,6 +122,8 @@ public abstract class BaseSpider {
             return new CmcSpider(config);
         } else if (config.getNjuSchoolCode().equals(schoolCode)) {
             return new NjuSpider(config);
+        } else if (config.getGdouSchoolCode().equals(schoolCode)) {
+            return new GdouSpider(config);
         }
         
         statusBean.setCode(StatusBean.CODE_ERR_SCHOOL);

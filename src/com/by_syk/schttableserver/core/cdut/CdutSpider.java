@@ -201,10 +201,13 @@ public class CdutSpider extends BaseSpider {
             while (matcher1.find()) {
                 int n = (matcher1.group(1) == null ? 1 : Integer.parseInt(matcher1.group(1)));
                 grids += n;
-                if (grids % 12 == 5) { // 第5格为“午”，非课时
+                if (n == 1 && grids % 12 == 5) { // 第5格为“午”，非课时
                     continue;
                 }
-                n = n > 5 ? n - 1 : n;
+                int lastOrder = (grids - n) % 12;
+                if (lastOrder < 5 && lastOrder + n >= 5) { // 去除区间包含的无效“午”格
+                    --n;
+                }
                 
                 CourseBean courseBean = new CourseBean();
                 courseBean.setUserKey(userKey);

@@ -6,6 +6,7 @@ import com.by_syk.schttableserver.bean.StatusBean;
 import com.by_syk.schttableserver.config.Config;
 import com.by_syk.schttableserver.core.cdut.CdutGather;
 import com.by_syk.schttableserver.core.cmc.CmcGather;
+import com.by_syk.schttableserver.core.gdou.GdouGather;
 import com.by_syk.schttableserver.core.neuq.NeuqGather;
 import com.by_syk.schttableserver.core.nju.NjuGather;
 import com.by_syk.schttableserver.util.ExtraUtil;
@@ -158,6 +159,8 @@ public abstract class BaseGather {
             return new CmcGather(config);
         } else if (config.getNjuSchoolCode().equals(schoolCode)) {
             return new NjuGather(config);
+        } else if (config.getGdouSchoolCode().equals(schoolCode)) {
+            return new GdouGather(config);
         }
         
         statusBean.setCode(StatusBean.CODE_ERR_SCHOOL);
