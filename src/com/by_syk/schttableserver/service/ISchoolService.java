@@ -6,7 +6,7 @@ import com.by_syk.schttableserver.vo.SchoolTodoVo;
 import com.by_syk.schttableserver.vo.SchoolVo;
 
 public interface ISchoolService {
-    List<SchoolVo> getAllSupportedSchools();
+    List<SchoolVo> getAllSupportedSchools(boolean withUserNum);
 
     List<SchoolTodoVo> getAllTodoSchools();
 }

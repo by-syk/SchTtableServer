@@ -67,9 +67,9 @@ public class CommonController {
     @RequestMapping(value = "/{schoolcode}/signin", method = RequestMethod.POST)
     @ResponseBody
     public ResResBean<StatusVo> signIn(@PathVariable("schoolcode") String schoolCode,
-            @RequestParam(value = "stuno") String enStuNo,
-            @RequestParam(value = "pwd") String enPwd) {
-        System.out.println("/common/" + schoolCode + "/signin");
+            @RequestParam("stuno") String enStuNo,
+            @RequestParam("pwd") String enPwd) {
+        System.out.println("POST /common/" + schoolCode + "/signin");
         
         String stuNo = NetEncryptUtil.decrypt(enStuNo);
         
@@ -110,9 +110,9 @@ public class CommonController {
     @RequestMapping(value = "/{schoolcode}/userinfo", method = RequestMethod.POST)
     @ResponseBody
     public ResResBean<KeyVo> getUserInfo(@PathVariable("schoolcode") String schoolCode,
-            @RequestParam(value = "stuno") String enStuNo,
-            @RequestParam(value = "pwd") String enPwd) {
-        System.out.println("/common/" + schoolCode + "/userinfo");
+            @RequestParam("stuno") String enStuNo,
+            @RequestParam("pwd") String enPwd) {
+        System.out.println("POST /common/" + schoolCode + "/userinfo");
         
         String stuNo = NetEncryptUtil.decrypt(enStuNo);
         
@@ -133,8 +133,8 @@ public class CommonController {
      */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
     @ResponseBody
-    public ResResBean<StatusVo> refresh(@RequestParam(value = "userkey") String userKey) {
-        System.out.println("/common/refresh " + userKey);
+    public ResResBean<StatusVo> refresh(@RequestParam("userkey") String userKey) {
+        System.out.println("POST /common/refresh " + userKey);
         
         StatusBean statusBean = new StatusBean();
         
@@ -167,9 +167,9 @@ public class CommonController {
      */
     @RequestMapping(value = "/daycourses", method = RequestMethod.POST)
     @ResponseBody
-    public ResResBean<List<CourseVo>> getDayCourses(@RequestParam(value = "userkey") String userKey,
-            @RequestParam(value = "date") Long dateMillis) {
-        System.out.println("/common/daycourses " + DateUtil.getDateStr(dateMillis, "yyyy-MM-dd"));
+    public ResResBean<List<CourseVo>> getDayCourses(@RequestParam("userkey") String userKey,
+            @RequestParam("date") Long dateMillis) {
+        System.out.println("POST /common/daycourses " + DateUtil.getDateStr(dateMillis, "yyyy-MM-dd"));
         
         return new ResResBean.Builder<List<CourseVo>>()
                 .status(ResResBean.STATUS_SUCCESS)
@@ -186,9 +186,9 @@ public class CommonController {
      */
 //    @RequestMapping("/coursepage")
 //    @ResponseBody
-//    public String getCoursePage(@RequestParam(value = "userkey") String userKey,
+//    public String getCoursePage(@RequestParam("userkey") String userKey,
 //            @RequestParam(value = "forcerefresh", required = false) Integer forceReresh) {
-//        System.out.println("/common/coursepage");
+//        System.out.println("POST /common/coursepage");
 //        
 //        boolean reqForceRefresh = forceReresh != null && forceReresh == 1;
 //        
@@ -213,8 +213,8 @@ public class CommonController {
 //    }
     
     @RequestMapping(value = "/coursepage", method = RequestMethod.POST)
-    public ResponseEntity<byte[]> getCoursePage(@RequestParam(value = "userkey") String userKey) throws IOException {
-        System.out.println("/common/coursepage");
+    public ResponseEntity<byte[]> getCoursePage(@RequestParam("userkey") String userKey) throws IOException {
+        System.out.println("POST /common/coursepage");
         
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -237,8 +237,8 @@ public class CommonController {
      */
     @RequestMapping(value = "/term", method = RequestMethod.POST)
     @ResponseBody
-    public ResResBean<TermVo> getTermInfo(@RequestParam(value = "userkey") String userKey) {
-        System.out.println("/common/term " + userKey);
+    public ResResBean<TermVo> getTermInfo(@RequestParam("userkey") String userKey) {
+        System.out.println("POST /common/term " + userKey);
         
         return new ResResBean.Builder<TermVo>()
                 .status(ResResBean.STATUS_SUCCESS)
@@ -251,14 +251,35 @@ public class CommonController {
      * 
      * @return
      */
+    @Deprecated
     @RequestMapping("/schools")
     @ResponseBody
-    public ResResBean<List<SchoolVo>> getSupportedSchools() {
-        System.out.println("/common/schools");
+    public ResResBean<List<SchoolVo>> getSupportedSchoolsGet() {
+        System.out.println("GET /common/schools");
         
         return new ResResBean.Builder<List<SchoolVo>>()
                 .status(ResResBean.STATUS_SUCCESS)
-                .result(schoolService.getAllSupportedSchools())
+                .result(schoolService.getAllSupportedSchools(false))
+                .build();
+    }
+    
+    /**
+     * 获取支持的学校
+     * 
+     * @return
+     */
+    @RequestMapping(value = "/schools", method = RequestMethod.POST)
+    @ResponseBody
+    public ResResBean<List<SchoolVo>> getSupportedSchools(@RequestParam(value = "userNum", required = false) Boolean withUserNum) {
+        System.out.println("POST /common/schools " + withUserNum);
+        
+        if (withUserNum == null) {
+            withUserNum = false;
+        }
+        
+        return new ResResBean.Builder<List<SchoolVo>>()
+                .status(ResResBean.STATUS_SUCCESS)
+                .result(schoolService.getAllSupportedSchools(withUserNum))
                 .build();
     }
     
@@ -268,10 +289,28 @@ public class CommonController {
      * @param request
      * @return
      */
+    @Deprecated
     @RequestMapping("/schoolstodo")
     @ResponseBody
+    public ResResBean<List<SchoolTodoVo>> getTodoSchoolsGet() {
+        System.out.println("GET /common/schoolstodo");
+        
+        return new ResResBean.Builder<List<SchoolTodoVo>>()
+                .status(ResResBean.STATUS_SUCCESS)
+                .result(schoolService.getAllTodoSchools())
+                .build();
+    }
+    
+    /**
+     * 获取正在申请中的学校
+     * 
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/schoolstodo", method = RequestMethod.POST)
+    @ResponseBody
     public ResResBean<List<SchoolTodoVo>> getTodoSchools() {
-        System.out.println("/common/schoolstodo");
+        System.out.println("POST /common/schoolstodo");
         
         return new ResResBean.Builder<List<SchoolTodoVo>>()
                 .status(ResResBean.STATUS_SUCCESS)
@@ -289,10 +328,10 @@ public class CommonController {
 //     */
 //    @RequestMapping("/dataok")
 //    @ResponseBody
-//    public JSONObject isDataOk(@RequestParam(value = "userkey", required = true) String userKey,
-//            @RequestParam(value = "startdate", required = true) Long startDateMillis,
+//    public JSONObject isDataOk(@RequestParam("userkey") String userKey,
+//            @RequestParam("startdate") Long startDateMillis,
 //            @RequestParam(value = "days", required = false) Integer days) {
-//        System.out.println("/common/dataok " + DateUtil.getDateStr(startDateMillis, "yyyy-MM-dd") + " " + days);
+//        System.out.println("POST /common/dataok " + DateUtil.getDateStr(startDateMillis, "yyyy-MM-dd") + " " + days);
 //        
 //        boolean ok = commonService.isDataOk(userKey, startDateMillis, days);
 //        
@@ -310,7 +349,7 @@ public class CommonController {
     @RequestMapping(value = "/status", method = RequestMethod.POST)
     @ResponseBody
     public ResResBean<StatusVo> getStatus(@RequestParam(value = "id") String statusId) {
-        System.out.println("/common/status");
+        System.out.println("POST /common/status");
         
         return new ResResBean.Builder<StatusVo>()
                 .status(ResResBean.STATUS_SUCCESS)

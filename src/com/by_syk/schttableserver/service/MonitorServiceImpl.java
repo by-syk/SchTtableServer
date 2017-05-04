@@ -21,9 +21,13 @@ public class MonitorServiceImpl implements IMonitorService {
         monitorBean.setIp(ip);
         monitorBean.setDeviceBrand(brand);
         monitorBean.setDeviceModel(model);
-        monitorBean.setDeviceSdk(sdk);
+        if (sdk != null) {
+            monitorBean.setDeviceSdk(sdk);
+        }
         monitorBean.setAppVerName(appVerName);
-        monitorBean.setAppVerCode(appVerCode);
+        if (appVerCode != null) {
+            monitorBean.setAppVerCode(appVerCode);
+        }
         
         return monitorDao.add(monitorBean);
     }

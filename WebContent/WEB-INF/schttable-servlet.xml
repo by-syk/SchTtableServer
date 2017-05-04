@@ -67,6 +67,7 @@
         <value>com.by_syk.schttableserver.bean.MonitorBean</value>
         <value>com.by_syk.schttableserver.bean.SchoolTodoBean</value>
         <value>com.by_syk.schttableserver.bean.AppVerBean</value>
+        <value>com.by_syk.schttableserver.bean.BugBean</value>
       </list>
     </property>
     <property name="hibernateProperties">

@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.by_syk.schttableserver.bean.ResResBean;
 import com.by_syk.schttableserver.service.IAppVerService;
+import com.by_syk.schttableserver.service.IBugService;
 import com.by_syk.schttableserver.service.IMonitorService;
 import com.by_syk.schttableserver.util.ExtraUtil;
 import com.by_syk.schttableserver.vo.AppVerVo;
@@ -27,6 +29,10 @@ public class MiscController {
     @Autowired
     @Qualifier("appVerService")
     private IAppVerService appVerService;
+    
+    @Autowired
+    @Qualifier("bugService")
+    private IBugService bugService;
     
     @RequestMapping("/index")
     public ModelAndView index(HttpServletResponse response) {
@@ -55,14 +61,7 @@ public class MiscController {
             @RequestParam(value = "devicesdk", required = false) Integer sdk,
             @RequestParam(value = "appvername", required = false) String appVerName,
             @RequestParam(value = "appvercode", required = false) Integer appVerCode) {
-        System.out.println("/misc/appversion " + model);
-        
-        if (sdk == null) {
-            sdk = 0;
-        }
-        if (appVerCode == null) {
-            appVerCode = 0;
-        }
+        System.out.println("GET /misc/appver " + model);
         
         monitorService.addLog(userKey, ExtraUtil.getRemoteHost(request),
                 brand, model, sdk, appVerName, appVerCode);
@@ -78,10 +77,36 @@ public class MiscController {
                 .build();
     }
     
+    /**
+     * 反馈课程信息BUG
+     * 
+     * @param schoolCode 学校代码
+     * @param stuNo 学号
+     * @param courseDate 课程日期
+     * @param courseOrder 课程节次
+     * @param desc BUG描述
+     * @return
+     */
+    @RequestMapping(value = "/bugrep", method = RequestMethod.POST)
+    @ResponseBody
+    public ResResBean<AppVerVo> checkAppUpdate(@RequestParam("schoolCode") String schoolCode,
+            @RequestParam("stuNo") String stuNo,
+            @RequestParam("courseDate") Long courseDate,
+            @RequestParam("courseOrder") Integer courseOrder,
+            @RequestParam(value = "desc", required = false) String desc) {
+        System.out.println("POST /misc/bugrep " + desc);
+        
+        boolean ok = bugService.addBugReport(schoolCode, stuNo, courseDate, courseOrder, desc);
+        
+        return new ResResBean.Builder<AppVerVo>()
+                .status(ok ? ResResBean.STATUS_SUCCESS : ResResBean.STATUS_ERROR)
+                .build();
+    }
+    
     @RequestMapping("/error")
     @ResponseBody
     public ResResBean<String> error(@RequestParam(value = "code", required = false) String code) {
-        System.out.println("/misc/error " + code);
+        System.out.println("GET /misc/error " + code);
         
         return new ResResBean.Builder<String>()
                 .status(ResResBean.STATUS_ERROR)
@@ -95,11 +120,28 @@ public class MiscController {
     @RequestMapping("/config")
     @ResponseBody
     public String getConfig() {
-        System.out.println("/misc/config");
+        System.out.println("GET /misc/config");
         
         String configInfo = ExtraUtil.readFile(this.getClass()
                 .getResourceAsStream("/resources/schttable.properties"));
         return configInfo;
+    }
+    
+    /**
+     * 看门狗
+     * 
+     * @return
+     */
+    @RequestMapping("/watchdog")
+    @ResponseBody
+    public ResResBean<Long> watchDog() {
+        System.out.println("GET /misc/watchdog");
+        
+        return new ResResBean.Builder<Long>()
+                .status(ResResBean.STATUS_SUCCESS)
+                .msg(ResResBean.MSG_SUCCESS)
+                .result(System.currentTimeMillis())
+                .build();
     }
     
 //    @RequestMapping("/calendar")
@@ -141,4 +183,12 @@ public class MiscController {
 //        
 //        return msg;
 //    }
+    
+    @RequestMapping("testencoding")
+    @ResponseBody
+    public String testJson(@RequestParam("text") String text) {
+        System.out.println("/misc/testencoding " + text);
+
+        return text;
+    }
 }

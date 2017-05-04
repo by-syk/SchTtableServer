@@ -21,6 +21,9 @@ public class SchoolVo implements Serializable {
 
     // 学校教务网站链接
     private String url;
+    
+    // 用户数
+    private int userNum;
 
     public SchoolVo() {}
     
@@ -66,6 +69,14 @@ public class SchoolVo implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+    
+    public int getUserNum() {
+        return userNum;
+    }
+    
+    public void setUserNum(int userNum) {
+        this.userNum = userNum;
     }
 
     public void parse(SchoolBean bean) {

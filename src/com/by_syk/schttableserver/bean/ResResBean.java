@@ -11,6 +11,9 @@ public class ResResBean<T> {
 
     public static final int STATUS_SUCCESS = 0;
     public static final int STATUS_ERROR = 1;
+    
+    public static final String MSG_SUCCESS = "success";
+    public static final String MSG_ERROR = "error";
 
     private ResResBean() {}
     

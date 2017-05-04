@@ -23,5 +23,10 @@ public interface IKeyDao {
     
     boolean delete(String schoolCode, String stuNo);
     
+    /**
+     * 统计各学校用户数
+     * k：学校代码
+     * v：用户数
+     */
     Map<String, Long> countSchoolUser();
 }
