@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.by_syk.schttableserver.bean.ResResBean;
+import com.by_syk.schttableserver.bean.WatchDogBean;
 import com.by_syk.schttableserver.service.IAppVerService;
 import com.by_syk.schttableserver.service.IBugService;
 import com.by_syk.schttableserver.service.IMonitorService;
@@ -134,13 +135,13 @@ public class MiscController {
      */
     @RequestMapping("/watchdog")
     @ResponseBody
-    public ResResBean<Long> watchDog() {
+    public ResResBean<WatchDogBean> watchDog(HttpServletRequest request) {
         System.out.println("GET /misc/watchdog");
         
-        return new ResResBean.Builder<Long>()
+        return new ResResBean.Builder<WatchDogBean>()
                 .status(ResResBean.STATUS_SUCCESS)
                 .msg(ResResBean.MSG_SUCCESS)
-                .result(System.currentTimeMillis())
+                .result(new WatchDogBean(request.getLocalPort(), System.currentTimeMillis()))
                 .build();
     }
     
@@ -184,11 +185,11 @@ public class MiscController {
 //        return msg;
 //    }
     
-    @RequestMapping("testencoding")
-    @ResponseBody
-    public String testJson(@RequestParam("text") String text) {
-        System.out.println("/misc/testencoding " + text);
-
-        return text;
-    }
+//    @RequestMapping("testencoding")
+//    @ResponseBody
+//    public String testJson(@RequestParam("text") String text) {
+//        System.out.println("/misc/testencoding " + text);
+//
+//        return text;
+//    }
 }
