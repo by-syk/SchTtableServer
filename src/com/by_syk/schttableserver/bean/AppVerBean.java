@@ -19,6 +19,7 @@ CREATE TABLE appver(
   description VARCHAR(512),
   url VARCHAR(256) NOT NULL,
   date DATE NOT NULL,
+  pub TINYINT(1) DEFAULT 0,
   PRIMARY KEY(pkg_name, ver_code)
 );
  *
@@ -65,6 +66,10 @@ public class AppVerBean implements Serializable {
     // 更新日期
     @Column(name = "date", nullable = false)
     private Date date;
+    
+    // 开放
+    @Column(name = "pub")
+    public boolean pub;
 
     public String getPkgName() {
         return pkgName;
@@ -128,5 +133,13 @@ public class AppVerBean implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+    
+    public void setPub(boolean pub) {
+        this.pub = pub;
+    }
+    
+    public boolean isPub() {
+        return pub;
     }
 }

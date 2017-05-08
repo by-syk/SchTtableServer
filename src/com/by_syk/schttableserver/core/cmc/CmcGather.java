@@ -8,6 +8,9 @@ import com.by_syk.schttableserver.config.Config;
 import com.by_syk.schttableserver.core.BaseGather;
 import com.by_syk.schttableserver.util.ExtraUtil;
 
+/**
+ * 成都医学院
+ */
 public class CmcGather extends BaseGather {
     private String urlHost;
     

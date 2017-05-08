@@ -22,7 +22,11 @@ public class AppVerServiceImpl implements IAppVerService {
         
         List<AppVerBean> list = appVerDao.getAll(CLIENT_APP_PKG_NAME);
         if (list != null && !list.isEmpty()) {
-            return new AppVerVo(list.get(0));
+            for (AppVerBean bean : list) {
+                if (bean.isPub()) {
+                    return new AppVerVo(bean);
+                }
+            }
         }
         return null;
     }

@@ -90,7 +90,7 @@ public class MiscController {
      */
     @RequestMapping(value = "/bugrep", method = RequestMethod.POST)
     @ResponseBody
-    public ResResBean<AppVerVo> checkAppUpdate(@RequestParam("schoolCode") String schoolCode,
+    public ResResBean<AppVerVo> reportBug(@RequestParam("schoolCode") String schoolCode,
             @RequestParam("stuNo") String stuNo,
             @RequestParam("courseDate") Long courseDate,
             @RequestParam("courseOrder") Integer courseOrder,

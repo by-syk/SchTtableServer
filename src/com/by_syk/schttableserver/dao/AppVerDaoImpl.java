@@ -24,7 +24,7 @@ public class AppVerDaoImpl implements IAppVerDao {
             return null;
         }
         
-        String hql = "FROM AppVerBean WHERE pkgName = :pkgName ORDER BY date DESC";
+        String hql = "FROM AppVerBean WHERE pkgName = :pkgName ORDER BY verCode DESC";
         
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(hql);

@@ -23,8 +23,6 @@ import com.by_syk.schttableserver.dao.ITimetableDao;
 import com.by_syk.schttableserver.util.DateUtil;
 import com.by_syk.schttableserver.vo.CourseVo;
 import com.by_syk.schttableserver.vo.TermVo;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service("commonService")
 public class CommonServiceImpl implements ICommonService {

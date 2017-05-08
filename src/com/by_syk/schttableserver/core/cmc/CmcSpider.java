@@ -21,6 +21,9 @@ import com.by_syk.schttableserver.util.DateUtil;
 import com.by_syk.schttableserver.util.StringUtil;
 import com.by_syk.schttableserver.util.net.HttpUtil;
 
+/**
+ * 成都医学院
+ */
 public class CmcSpider extends BaseSpider {
     private String urlHost;
     private String urlIndex;

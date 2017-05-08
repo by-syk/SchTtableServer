@@ -18,6 +18,9 @@ import com.by_syk.schttableserver.util.StringUtil;
 import com.by_syk.schttableserver.util.TokenCookie;
 import com.by_syk.schttableserver.util.net.HttpUtil;
 
+/**
+ * 成都理工大学
+ */
 public class CdutSpider extends BaseSpider {
     private String urlHost;
     private String urlLogin;

@@ -136,6 +136,33 @@ public class Config {
     @Value("${gdou.weekorder1startdate}")
     private String gdouWeekOrder1StartDate;
 
+    @Value("${ncu.schoolcode}")
+    private String ncuSchoolCode;
+    
+    @Value("${ncu.host}")
+    private String ncuHost;
+    
+    @Value("${ncu.index}")
+    private String ncuIndex;
+    
+    @Value("${ncu.login}")
+    private String ncuLogin;
+    
+    @Value("${ncu.graphicc}")
+    private String ncuGraphicC;
+    
+    @Value("${ncu.userinfo}")
+    private String ncuUserInfo;
+
+    @Value("${ncu.courses}")
+    private String ncuCourses;
+
+    @Value("${ncu.term}")
+    private int ncuTerm;
+
+    @Value("${ncu.weekorder1startdate}")
+    private String ncuWeekOrder1StartDate;
+
     public String getHtmlDir() {
         if ((new File(debugHtmlDir)).exists()) {
             return debugHtmlDir;
@@ -301,5 +328,41 @@ public class Config {
     
     public String getGdouWeekOrder1StartDate() {
         return gdouWeekOrder1StartDate;
+    }
+    
+    public String getNcuSchoolCode() {
+        return ncuSchoolCode;
+    }
+    
+    public String getNcuHost() {
+        return ncuHost;
+    }
+
+    public String getNcuIndex() {
+        return ncuIndex;
+    }
+
+    public String getNcuLogin() {
+        return ncuLogin;
+    }
+
+    public String getNcuGraphicC() {
+        return ncuGraphicC;
+    }
+
+    public String getNcuUserInfo() {
+        return ncuUserInfo;
+    }
+
+    public String getNcuCourses() {
+        return ncuCourses;
+    }
+
+    public int getNcuTerm() {
+        return ncuTerm;
+    }
+    
+    public String getNcuWeekOrder1StartDate() {
+        return ncuWeekOrder1StartDate;
     }
 }

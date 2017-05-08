@@ -8,6 +8,9 @@ import com.by_syk.schttableserver.config.Config;
 import com.by_syk.schttableserver.core.BaseGather;
 import com.by_syk.schttableserver.util.ExtraUtil;
 
+/**
+ * 南京大学
+ */
 public class NjuGather extends BaseGather {
     private String urlHost;
     

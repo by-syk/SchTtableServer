@@ -21,6 +21,9 @@ import com.by_syk.schttableserver.util.DateUtil;
 import com.by_syk.schttableserver.util.StringUtil;
 import com.by_syk.schttableserver.util.net.HttpUtil;
 
+/**
+ * 广东海洋大学
+ */
 public class GdouSpider extends BaseSpider {
     private String urlHost;
     private String urlIndex;
@@ -88,7 +91,7 @@ public class GdouSpider extends BaseSpider {
                 map.put("__VIEWSTATE", viewState);
                 map.put("txtUserName", stuNo);
                 map.put("TextBox2", pwd);
-                map.put("txtSecretCode", code); // 验证码
+                map.put("txtSecretCode", "1234"); // 验证码
                 map.put("Textbox1", "");
                 map.put("Button1", "");
                 map.put("lbLanguage", "");
